@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title><![CDATA[HaveTry]]></title>
+    <url>%2F2019%2F07%2F16%2FHaveTry%2F</url>
+    <content type="text"></content>
+  </entry>
+  <entry>
+    <title><![CDATA[Hello World]]></title>
+    <url>%2F2019%2F07%2F12%2Fhello-world%2F</url>
+    <content type="text"><![CDATA[Linear_regressionLogistic 回归这是周志华的《机器学习》一书中对数几率回归的编程实现，使用牛顿迭代法。]]></content>
+  </entry>
+</search>
