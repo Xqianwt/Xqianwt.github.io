@@ -1,6 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[打开docker内存不足问题]]></title>
+    <url>%2F2019%2F04%2F11%2F%E6%89%93%E5%BC%80docker%E5%86%85%E5%AD%98%E4%B8%8D%E8%B6%B3%E9%97%AE%E9%A2%98%2F</url>
+    <content type="text"><![CDATA[打开docker内存不足问题因为远古电脑内存只有4g，在使用scrapy-splash爬虫时要用到docker，安装好打开docker—desktop之后，提示Not enough memory to start Docker Desktop，明显是电脑内存不足咯！ 找到的解决方法使用内存管理工具：memory cleaner。]]></content>
+      <categories>
+        <category>问题</category>
+      </categories>
+      <tags>
+        <tag>问题</tag>
+        <tag>docker</tag>
+        <tag>memory_cleaner</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[Linear_regression]]></title>
     <url>%2F2019%2F03%2F17%2FLinear-regression%2F</url>
     <content type="text"><![CDATA[Linear_regressionLogistic 回归理论基础这是周志华的《机器学习》一书中对数几率回归的编程实现，主要使用牛顿迭代法。 对于二分类问题，输出形式为$y\in \lbrack0,1\rbrack$,而线性回归模型产生的预测值$z=w^Tx+b$是实值，利用单位阶跃函数将$z$转换为$0/1$值:$$y=\begin{cases} 0, &amp;&amp; \text{$z&lt;0$}\\ 0.5, &amp;&amp; z=0\\ 1, &amp;&amp; z&gt;0\end{cases}$$常用替代函数$y= \frac{1}{1+e^{-z}}$,即：$$ln\frac{y}{1-y}=w^Tx+b$$$w^Tx+b$简写为$\beta$，可利用极大似然法估计$w$和$b$:$$l(\beta)=\sum_{i=1}^n(-y_i\beta^T\hat x_i+ln(1+e^{\beta^T\hat{x_i}}))$$上式可用梯度下降法或者牛顿法求解。 代码实现这里主要用的牛顿法：定义Sigmoid函数： 12def Sigmoid(self, x): return 1/(1+np.exp(-x)) 计算梯度算子与Hessian矩阵: 12345678910111213141516def Hessian(self, beta, length): ''' 计算梯度算子与Hessian矩阵 ''' input_data = self.input_data label = self.label gradient = np.mat([0]*length, dtype = np.float64).T hessian_mat = np.mat([[0]*length]*length, dtype = np.float64) for i in range(len(input_data)): row = np.mat(list(input_data.iloc[i])).T pro0 = float(self.Sigmoid(-beta*row)) gradient += row*(1-pro0-label[i]) hessian_mat += row * row.T *(1-pro0)*pro0 return gradient, hessian_mat 牛顿迭代法求解： 1234567891011121314def Newton(self, iter_num = 10): ''' 牛顿迭代法求解 ''' input_data = self.input_data length =len(input_data.iloc[0]) beta_init = np.mat([0]*length) for i in range(iter_num): gradient, hessian = self.Hessian(beta_init, length) beta = beta_init - (hessian.I * gradient).T beta_init = beta return beta 预测方法： 123456789101112131415def Predict(self, test_data, iter_num = 10): ''' 预测方法 ''' beta = self.Newton(iter_num) test_p = [] for i in range(len(test_data)): p = float(np.mat(test_data.iloc[i])*beta.T) p = self.Sigmoid(p) if p&gt;=0.5: p = 1 else: p = 0 test_p.append(p return test_p 结果演示： 123456789101112def Train_Pre(self): ''' 训练集结果以及正确率 ''' input_data = self.input_data label = self.label train_p = self.Predict(input_data) T = 0 for i, j in list(zip(train_p, label)): if i == j: T += 1 true_rate = T/len(label) return train_p, true_rate 完整代码：https://github.com/Xqianwt/Linear_regression]]></content>
