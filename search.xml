@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[有哪些演员让你觉得不红可惜了]]></title>
+    <url>%2F2019%2F07%2F22%2F%E6%9C%89%E5%93%AA%E4%BA%9B%E6%BC%94%E5%91%98%E8%AE%A9%E4%BD%A0%E8%A7%89%E5%BE%97%E4%B8%8D%E7%BA%A2%E5%8F%AF%E6%83%9C%E4%BA%86%2F</url>
+    <content type="text"><![CDATA[知乎有哪些演员让你觉得不红实在太可惜了？让数据说话从知乎回答中看到灵感，收集了这个问题的答案，从数据上看看哪些演员不红可惜了。 答案收集主要用到的的是Python的requests库 123456789101112131415161718192021222324252627282930import requestsfrom json import loadsfrom urllib.parse import urlencodeclass getZhihuAnswers(object): def __init__(self, questionID, page): headers = &#123; 'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36' &#125; #请求头 conf = &#123; 'include' : 'content', 'limit' : 10, 'offset' : page*10, 'paltform' : 'desktop', 'sort_by' : 'default' &#125; #url配置项 self.url_main = 'https://www.zhihu.com/api/v4/questions/&#123;&#125;/answers?'.format(questionID) self.url = self.url_main + urlencode(conf) self.headers = headers def getPages(self): try: response = requests.get(self.url, headers = self.headers) print(self.url) page = loads(response.text) return page['data'] except requests.exceptions.HTTPError: return None 数据主要存储在MongoDB中 123456789101112131415161718192021import pymongoclass putMongo(): def __init__(self, client='localhost', dbName='zhihu', colName='actors'): self.client = pymongo.MongoClient(client) self.db = self.client[dbName] self.col = self.db[colName] def insertData(self, data, page): self.col.insert_many(data) print('已插入第&#123;&#125;页！'.format(page)) def findData(self, items): choosedItems = &#123;&#125; for i in items: choosedItems[i] = 1 data = self.col.find(&#123;&#125;, choosedItems) return data 在拿到数据后，利用自然语言处理hanlp工具包中HMM算法识别演员人名，同时选取频率最大的人名作为答案。 12345678910111213141516171819202122232425def chooseName(contents): segment = ph.HanLP.newSegment().enableNameRecognize(True) i = 0 actors = [] while i &gt;= 0: try: content = contents[i] items = segment.seg(content['content']) names = [] for j in range(items.size()): if items.get(j).nature.toString() == 'nr': names.append(items.get(j).word) if names != []: counter_names = Counter(names) actors.append(counter_names.most_common(1)[0][0]) if i % 50 == 0: print('&#123;&#125;ok！'.format(i)) except IndexError as e: print('已完成') break i += 1 return actors 最后选取前十名： 完整代码：https://github.com/Xqianwt/zhihu]]></content>
+      <categories>
+        <category>python</category>
+      </categories>
+      <tags>
+        <tag>-知乎 -python -NLP -爬虫</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[打开docker内存不足问题]]></title>
     <url>%2F2019%2F04%2F11%2F%E6%89%93%E5%BC%80docker%E5%86%85%E5%AD%98%E4%B8%8D%E8%B6%B3%E9%97%AE%E9%A2%98%2F</url>
     <content type="text"><![CDATA[打开docker内存不足问题因为远古电脑内存只有4g，在使用scrapy-splash爬虫时要用到docker，安装好打开docker—desktop之后，提示Not enough memory to start Docker Desktop，明显是电脑内存不足咯！ 找到的解决方法使用内存管理工具：memory cleaner。]]></content>
